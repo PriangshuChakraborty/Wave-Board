@@ -6,7 +6,7 @@ import Home from './pages/Home'
 import uuidGen from './utils/UuidGen'
 import { ToastContainer, toast } from 'react-toastify'
 
-const server = "http://localhost:5000";
+const server = "https://wave-board.onrender.com";
 
 const connectionOptions = {
   "force new connection": true,
