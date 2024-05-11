@@ -2,6 +2,16 @@
 
 Welcome to Wave Board, a go-to platform for real-time whiteboard collaboration. With Wave Board, you can brainstorm ideas, teach your team or students etc.
 
+## Table of Contents
+
+- Features
+- Getting Started
+- Usage
+- Technologies Used
+- Badges
+- Special Note
+- Credits
+
 ## Features
 
 - **Real-time Collaboration :** Collaborate with multiple users simultaneously on the same whiteboard.
