@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css';
+import Mobile from './Mobile.jsx'
 
 
 function isMobileDevice() {
@@ -17,5 +18,9 @@ if(!isMobileDevice()){
     </BrowserRouter>
   )
 }else{
-  window.location.href = "/not-supported";
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <BrowserRouter>
+      <Mobile />
+    </BrowserRouter>
+  )
 }
