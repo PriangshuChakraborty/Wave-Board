@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import copy from 'copy-to-clipboard';
 import { useNavigate } from 'react-router-dom';
 
-const CreateRoom = ({ uuid, socket}) => {
+const CreateRoom = ({ uuid, socket }) => {
     const [roomId, setRoomId] = useState('')
     const [fullName, setFullName] = useState('')
     const [copySuccess, setCopySuccess] = useState(false)

@@ -11,13 +11,13 @@ function isMobileDevice() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
-if(!isMobileDevice()){
+if (!isMobileDevice()) {
   ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <App />
     </BrowserRouter>
   )
-}else{
+} else {
   ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Mobile />

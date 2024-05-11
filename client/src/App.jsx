@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import uuidGen from './utils/UuidGen'
 import { ToastContainer, toast } from 'react-toastify'
+import Loader from './pages/Loader'
 
 const server = "https://wave-board.onrender.com";
 
@@ -17,20 +18,15 @@ const connectionOptions = {
 
 const socket = io(server, connectionOptions);
 
-
-
 const App = () => {
   const [user, setUser] = useState(null)
   const [users, setUsers] = useState([])
 
   useEffect(() => {
     socket.on('userIsJoined', (data) => {
-      if(data.success){
-        console.log('User is joined')
+      if (data.success) {
         setUser(data)
         setUsers(data.users)
-      } else {
-        console.log('User is not joined')
       }
     })
 
@@ -63,7 +59,7 @@ const App = () => {
       setUsers(users => users.filter(usr => usr.userId !== data.userId))
     })
 
-    socket.on('raiseHand-res', (data) => { 
+    socket.on('raiseHand-res', (data) => {
       toast.info(`${data.name} raised hand`, {
         position: "top-right",
         autoClose: 3000,
@@ -75,7 +71,7 @@ const App = () => {
       });
     })
 
-    socket.on('reaction-res', (data) => { 
+    socket.on('reaction-res', (data) => {
       toast.info(`${data.name} reacted with ${data.reaction}`, {
         position: "top-right",
         autoClose: 3000,
@@ -88,14 +84,16 @@ const App = () => {
     })
 
   }, [])
-
-  
   return (
     <div>
       <ToastContainer />
       <Routes>
-        <Route path="/" element={<Dashboard uuid={uuidGen} socket={socket} />} />
-        <Route path="/:roomId" element={<Home user={user} socket={socket} users={users} />} />
+        <Route path="/" element={<Dashboard uuid={uuidGen} socket={socket}/> } />
+        {
+          user ?
+            <Route path="/:roomId" element={<Home user={user} socket={socket} users={users} />} /> :
+            <Route path="/:roomId" element={<Loader />} />
+        }
       </Routes>
     </div>
   )

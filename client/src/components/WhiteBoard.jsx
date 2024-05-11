@@ -19,10 +19,11 @@ import { IoColorFill } from "react-icons/io5";
 import { MdOutlineFormatColorFill } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import { IoHandRight } from "react-icons/io5";
+import white from '../assets/white-back.png'
 
 const generator = rough.generator()
 
-const createElement = (id, x1, y1, x2, y2, tool,fillColor,fillStyle) => {
+const createElement = (id, x1, y1, x2, y2, tool, fillColor, fillStyle) => {
 
     let roughElement;
 
@@ -31,19 +32,19 @@ const createElement = (id, x1, y1, x2, y2, tool,fillColor,fillStyle) => {
             roughElement = generator.line(x1, y1, x2, y2)
             return { id, x1, y1, x2, y2, roughElement, tool }
         case 'rectangle':
-            roughElement = generator.rectangle(x1, y1, x2 - x1, y2 - y1, { fill: fillColor, fillStyle: fillStyle})
-            return { id, x1, y1, x2, y2, roughElement, tool, fillColor, fillStyle}
+            roughElement = generator.rectangle(x1, y1, x2 - x1, y2 - y1, { fill: fillColor, fillStyle: fillStyle })
+            return { id, x1, y1, x2, y2, roughElement, tool, fillColor, fillStyle }
         case 'circle':
             const centerX = (x1 + x2) / 2;
             const centerY = (y1 + y2) / 2;
             const width = Math.abs(x2 - x1)
             const height = Math.abs(y2 - y1)
-            roughElement = generator.ellipse(centerX, centerY, width, height, { fill: fillColor , fillStyle: fillStyle})
-            return { id, x1, y1, x2, y2, roughElement, tool, fillColor, fillStyle}
+            roughElement = generator.ellipse(centerX, centerY, width, height, { fill: fillColor, fillStyle: fillStyle })
+            return { id, x1, y1, x2, y2, roughElement, tool, fillColor, fillStyle }
         case 'pencil':
-            return { id, tool, points: [{ x: x1, y: y1 }],fillColor}
+            return { id, tool, points: [{ x: x1, y: y1 }], fillColor }
         case 'text':
-            return { id, x1, y1, x2, y2, tool, text: '',fillColor }
+            return { id, x1, y1, x2, y2, tool, text: '', fillColor }
         default:
             throw new Error('Invalid tool')
     }
@@ -274,7 +275,7 @@ const drawElement = (rc, element, context) => {
 const adjustmentRequired = (tool) => ['line', 'rectangle', 'circle'].includes(tool)
 
 const WhiteBoard = ({ user, socket }) => {
-    const [img, setImg] = useState('')
+    const [img, setImg] = useState(white)
 
     useEffect(() => {
         socket.on('canvas-data-res', (data) => {
@@ -304,12 +305,12 @@ const WhiteBoard = ({ user, socket }) => {
     const [reaction, setReaction] = useState('')
 
 
-    useEffect(() => { 
-        if(reaction !== '') {
+    useEffect(() => {
+        if (reaction !== '') {
             socket.emit('reaction', reaction)
             setReaction('')
         }
-    },[reaction])
+    }, [reaction])
 
     useEffect(() => {
         if (action === 'writing') {
@@ -318,7 +319,7 @@ const WhiteBoard = ({ user, socket }) => {
                 inputRef.current.value = selectedElements.text
             }, 0);
         }
-    }, [selectedElements, action,fillColor])
+    }, [selectedElements, action, fillColor])
 
     useEffect(() => {
         if (action === 'writing') {
@@ -329,7 +330,7 @@ const WhiteBoard = ({ user, socket }) => {
             }, 0);
         }
 
-    }, [inputRef, value, action,fillColor]);
+    }, [inputRef, value, action, fillColor]);
 
     useEffect(() => {
         if (action === 'writing') {
@@ -340,7 +341,7 @@ const WhiteBoard = ({ user, socket }) => {
             }, 0);
         }
 
-    }, [inputRef, value, action,fillColor]);
+    }, [inputRef, value, action, fillColor]);
 
 
 
@@ -402,7 +403,7 @@ const WhiteBoard = ({ user, socket }) => {
             case 'line':
             case 'rectangle':
             case 'circle':
-                elementsCopy[id] = createElement(id, x1, y1, clientX, clientY, tool,elementsCopy[id].fillColor,elementsCopy[id].fillStyle)
+                elementsCopy[id] = createElement(id, x1, y1, clientX, clientY, tool, elementsCopy[id].fillColor, elementsCopy[id].fillStyle)
                 break
             case 'pencil':
                 elementsCopy[id].points = [...elementsCopy[id].points, { x: clientX, y: clientY }]
@@ -413,7 +414,7 @@ const WhiteBoard = ({ user, socket }) => {
                 const lineHeight = 20
                 const textHeight = lines.length * lineHeight
                 elementsCopy[id] = {
-                    ...createElement(id, x1, y1, x1 + textWidth, y1 + textHeight, tool,elementsCopy[id].fillColor),
+                    ...createElement(id, x1, y1, x1 + textWidth, y1 + textHeight, tool, elementsCopy[id].fillColor),
                     text: options.text
                 }
                 break
@@ -425,10 +426,10 @@ const WhiteBoard = ({ user, socket }) => {
 
 
     const handleMouseDown = (e) => {
-        
+
         setDropDownVisible(false)
         setPickerVisible(false)
-        
+
         if (action === 'writing') return
 
         const { clientX, clientY } = getMouseCoordinates(e)
@@ -460,7 +461,7 @@ const WhiteBoard = ({ user, socket }) => {
             }
         } else {
             const id = elements.length
-            const element = createElement(id, clientX, clientY, clientX, clientY, tool,fillColor,fillStyle)
+            const element = createElement(id, clientX, clientY, clientX, clientY, tool, fillColor, fillStyle)
             setElements((prevState) => [...prevState, element])
             if (tool === 'text') {
                 setSelectedElements(element)
@@ -539,8 +540,8 @@ const WhiteBoard = ({ user, socket }) => {
             }
         }
 
-        if (action === 'writing')   return
-     
+        if (action === 'writing') return
+
 
 
         setAction('none')
@@ -551,7 +552,7 @@ const WhiteBoard = ({ user, socket }) => {
         const { id, x1, y1, tool } = selectedElements;
         setAction("none");
         setSelectedElements(null);
-        updatedElements(id, x1, y1, null, null, tool, { text: e.target.value },fillColor)
+        updatedElements(id, x1, y1, null, null, tool, { text: e.target.value }, fillColor)
     }
 
     const onZoom = (delta) => {
@@ -580,66 +581,66 @@ const WhiteBoard = ({ user, socket }) => {
         }
     }
 
-    const handleClear = () => { 
+    const handleClear = () => {
         setElements([])
     }
 
     const handleRaiseHand = () => {
         socket.emit('raiseHand')
-     }
+    }
 
     if (!user?.presenter) {
 
         return (
             <div>
-            <div className='flex mb-1 '>
-                <div onClick={handleRaiseHand} className=' cursor-pointer border-2 rounded p-1 text-center mr-2 border-zinc-800 text-zinc-800 hover:bg-zinc-800 hover:text-white'>
-                    <IoHandRight  className='w-6 h-6'/>
+                <div className='flex mb-1 '>
+                    <div onClick={handleRaiseHand} className=' cursor-pointer border-2 rounded p-1 text-center mr-2 border-zinc-800 text-zinc-800 hover:bg-zinc-800 hover:text-white'>
+                        <IoHandRight className='w-6 h-6' />
                     </div>
                     <div className='cursor-pointer border-2 rounded p-1 text-center mr-2 border-zinc-800 hover:bg-zinc-800 text-lg'
-                        onClick={() => setReaction('😆') }
+                        onClick={() => setReaction('😆')}
                     >
                         😆
                     </div>
                     <div className='cursor-pointer border-2 rounded p-1 text-center mr-2 border-zinc-800 hover:bg-zinc-800 text-lg'
-                        onClick={() => setReaction('😍') }
+                        onClick={() => setReaction('😍')}
                     >
                         😍
                     </div>
                     <div className='cursor-pointer border-2 rounded p-1 text-center mr-2 border-zinc-800 hover:bg-zinc-800 text-lg'
-                        onClick={() => setReaction('😔') }
+                        onClick={() => setReaction('😔')}
                     >
                         😔
                     </div>
                     <div className='cursor-pointer border-2 rounded p-1 text-center mr-2 border-zinc-800 hover:bg-zinc-800 text-lg'
-                        onClick={() => setReaction('👌') } 
+                        onClick={() => setReaction('👌')}
                     >
                         👌
 
                     </div>
                     <div className='cursor-pointer border-2 rounded p-1 text-center mr-2 border-zinc-800 hover:bg-zinc-800 text-lg'
-                        onClick={() => setReaction('👍') }
+                        onClick={() => setReaction('👍')}
                     >
                         👍
                     </div>
                     <div className='cursor-pointer border-2 rounded p-1 text-center mr-2 border-zinc-800 hover:bg-zinc-800 text-lg'
-                        onClick={() => setReaction('👎') }
+                        onClick={() => setReaction('👎')}
                     >
                         👎
-                    </div> 
-            </div>
-            <div className='w-[58.82vw] h-[76.92vh] overflow-hidden border-2 border-gray-900 z-0 rounded-md shadow-md shadow-slate-700'>
-                <img
-                    src={img}
-                    alt=""
-                    className='w-full h-full'
+                    </div>
+                </div>
+                <div className='w-[58.82vw] h-[76.92vh] overflow-hidden border-2 border-gray-900 z-0 rounded-md shadow-md shadow-slate-700'>
+                    <img
+                        src={img}
+                        alt=""
+                        className='w-full h-full'
                     />
-            </div>
+                </div>
             </div>
         )
     }
 
-   
+
 
     return (
         <div>
@@ -650,7 +651,7 @@ const WhiteBoard = ({ user, socket }) => {
                     name="drawing-type"
                     checked={tool === 'selection'}
                     onChange={() => setTool('selection')}
-                    className='peer sr-only' 
+                    className='peer sr-only'
                 />
                 <label htmlFor="selection"
                     className={` ${tool === 'selection' ?
@@ -762,7 +763,7 @@ const WhiteBoard = ({ user, socket }) => {
                     onClick={() => onZoom(-0.1)}
                     className='border-2 rounded p-1 text-center mr-2 border-zinc-800 text-zinc-800 hover:bg-zinc-800 hover:text-white'
                 >
-                    <HiMagnifyingGlassMinus className='h-5 w-5' /> 
+                    <HiMagnifyingGlassMinus className='h-5 w-5' />
                 </button>
                 <button
                     onClick={handleSave}
@@ -773,7 +774,7 @@ const WhiteBoard = ({ user, socket }) => {
                 {a.length !== 0 ? <button onClick={handleDownload}
                     className='border-2 rounded p-1 text-center mr-2 border-zinc-800 text-zinc-800 hover:bg-zinc-800 hover:text-white'
                 >
-                    <FaDownload className='h-5 w-5'/>
+                    <FaDownload className='h-5 w-5' />
                 </button> : null}
 
                 {
@@ -787,7 +788,7 @@ const WhiteBoard = ({ user, socket }) => {
                             }
                         </p>
                     )
-               }
+                }
 
                 {
                     (tool === 'rectangle' || tool === 'circle') ? (
@@ -799,7 +800,7 @@ const WhiteBoard = ({ user, socket }) => {
                         >
                             {fillStyle !== '' ? titleStyle : 'Fill Style'}
                         </button>
-                    ):null
+                    ) : null
                 }
                 <button
                     onClick={handleClear}
@@ -808,7 +809,7 @@ const WhiteBoard = ({ user, socket }) => {
                     <MdDeleteForever className='h-5 w-5' />
                 </button>
 
-            
+
             </div>
             <div className='w-[58.82vw] h-[76.92vh] relative' >
                 <canvas
@@ -820,8 +821,8 @@ const WhiteBoard = ({ user, socket }) => {
                     onMouseMove={handleMouseMove}
                     onMouseUp={handleMouseUp}
                 ></canvas>
-                
-                    {isPickerVisible && (<SwatchesPicker
+
+                {isPickerVisible && (<SwatchesPicker
                     color={fillColor}
                     onChangeComplete={(fillColor) => setFillColor(fillColor.hex)}
                     className='absolute top-[0.5%] right-[15%] z-10'

@@ -8,15 +8,15 @@ const Home = ({ user, socket, users }) => {
   return (
     <div className=' w-screen h-screen flex justify-center items-center'>
       <div className='flex justify-start h-full w-[15%] py-3' >
-        <ShowedUser users={users } user={user} />
+        <ShowedUser users={users} user={user} />
       </div>
 
       <div className='flex-col justify-center items-center'>
         <div className='flex flex-col justify-center items-center'>
           <img src={logo} alt="logo" className='w-[350px] mb-2' />
           <div className='flex justify-center items-center mb-3'>
-          <div className='text-2xl font-serif text-slate-700'>
-            User Online : {users.length}
+            <div className='text-2xl font-serif text-slate-700'>
+              User Online : {users.length}
             </div>
           </div>
         </div>
